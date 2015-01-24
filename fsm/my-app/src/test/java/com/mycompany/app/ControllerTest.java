@@ -1,14 +1,16 @@
 package com.mycompany.app;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 
 /**
  * Unit test for simple finite state machine.
  */
-public class AppTest 
-    extends TestCase
+
+public class ControllerTest 
 { 
 	Trans up__ = new Trans() {
 		{
@@ -87,41 +89,32 @@ public class AppTest
         return fsm;
 	}
 	    
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
+    @Test
     public void test1()
     { 
 		Controller fsm = createController();
 		fsm.setCurrent(grndFloor);
 		fsm.when(down); 
 		
-        assertTrue( fsm.getCurrent() == grndFloor);
+        assertThat((State)fsm.getCurrent(), is(equalTo(grndFloor)));
     }
+    
+    @Test
     public void test2()
     { 
+    	// Arrange
 		Controller fsm = createController();
 		fsm.setCurrent(grndFloor);
 		fsm.when(down);
+		
+		// Act
 		fsm.when(up__); 
 		
+		// Assert
         assertTrue( fsm.getCurrent() == frstFloor);
     }
+    
+    @Test
     public void test3()
     { 
 		Controller fsm = createController();
@@ -132,6 +125,8 @@ public class AppTest
 		
         assertTrue( fsm.getCurrent() == frstFloor);
     }
+    
+    @Test
     public void test4()
     { 
 		Controller fsm = createController();
